@@ -1,4 +1,24 @@
 ﻿<Properties StartupConfiguration="{FBB13F62-3BF9-4020-98EA-747DF8B468FB}|Default">
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.autocommit-windows FirstBuild="True" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.autocommit-windows PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="autocommit-windows/Program.cs">
+    <Files>
+      <File FileName="autocommit-windows/Program.cs" Line="18" Column="1" />
+      <File FileName="autocommit-windows/autocommit-windows.csproj" Line="12" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="autocommit-windows" expanded="True">
+            <Node name="autocommit-windows" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

@@ -1,32 +1,6 @@
 #!/usr/bin/env bash
 
-SCRIPT_NAME="autocommit"
-
-SITE_MAIN="https://u1319464.wixsite.com/git-autocommit--chan"
-
-API_ENDPOINT="$SITE_MAIN/_functions-dev/"
-
-if [[ -z "${AUTOCOMMIT_KEY}" ]]; then
-	
-	echo "$SCRIPT_NAME: You must register this command line (no Autocommit key detected). Go to this url if the browser hasn't already opened."
-	
-	AUTOCOMMIT_KEY=$(openssl rand -base64 8):$(openssl rand -base64 32)
-	
-	SITE_CLI_LOGIN="$SITE_MAIN/cli-login?key=$AUTOCOMMIT_KEY"
-	
-	open "$SITE_CLI_LOGIN"
-	
-	echo
-	echo "$SITE_CLI_LOGIN"
-	echo
-	echo "Then, append the following to your ~/.bashrc or ~/.zshrc, and re-run $SCRIPT_NAME."
-	echo
-	echo "export AUTOCOMMIT_KEY=\"$AUTOCOMMIT_KEY\" # Git Autocommit user key."
-	echo
-	exit
-else
-	echo "Found Autocommit key"
-fi
+source autocommit-env
 
 function get_hidden_key {
 	# hash our key and the current 10 second interal in the epoch
