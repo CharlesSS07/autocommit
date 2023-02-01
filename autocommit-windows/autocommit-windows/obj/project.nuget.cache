@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ijsoneOgADUfFdUNq/6TvmdTRxryzaGiXRA18zsefgfjwQfZfN2hRxjB41iyBBLv8wVXAqGP7DKmtsRyCQlLlw==",
+  "success": true,
+  "projectFilePath": "/Users/charlesstrauss/GPT-commit-summarizer/autocommit/autocommit-windows/autocommit-windows/autocommit-windows.csproj",
+  "expectedPackageFiles": [
+    "/Users/charlesstrauss/.nuget/packages/libgit2sharp/0.26.2/libgit2sharp.0.26.2.nupkg.sha512",
+    "/Users/charlesstrauss/.nuget/packages/libgit2sharp.nativebinaries/2.0.306/libgit2sharp.nativebinaries.2.0.306.nupkg.sha512"
+  ],
+  "logs": []
+}
