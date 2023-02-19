@@ -2,14 +2,14 @@
 
 AUTOCOMMIT_SCRIPT_DIR=$(dirname $0)
 
-source $AUTOCOMMIT_SCRIPT_DIR/autocommit-env
+# source $AUTOCOMMIT_SCRIPT_DIR/autocommit-env
 
 GIT_HOOK_FILE=.git/hooks/prepare-commit-msg
 
 touch $GIT_HOOK_FILE
 chmod a+x $GIT_HOOK_FILE
 
-INSTALLATION_INDICATOR_LINE="# Autocommit Installed U6xMiYSSlG/kkgB/1Y13jw"
+INSTALLATION_INDICATOR_LINE="# Autocommit Installed U6xMiYSSlG/kkgB/1Y13jw DO NOT MODIFY"
 
 if grep -Fxq "$INSTALLATION_INDICATOR_LINE" $GIT_HOOK_FILE
 then
@@ -18,7 +18,7 @@ else
 	echo "" >> $GIT_HOOK_FILE
 	echo "$INSTALLATION_INDICATOR_LINE" >> $GIT_HOOK_FILE
 	cat $AUTOCOMMIT_SCRIPT_DIR/autocommit-env $AUTOCOMMIT_SCRIPT_DIR/autocommit-hook | grep -v "#" | grep -v "^$" >> $GIT_HOOK_FILE
-	# remove comments, and empty lines
+	# paste in environment, and hook, remove comments, and empty lines
 	echo "$INSTALLATION_INDICATOR_LINE" >> $GIT_HOOK_FILE
 	echo "" >> $GIT_HOOK_FILE
 fi

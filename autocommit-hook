@@ -36,12 +36,8 @@ curl -s \
 	"https://u1319464.wixsite.com/git-autocommit--chan/_functions-dev/autocommit?key=$(get_hidden_key)" \
 	-H 'Content-Type: application/json' \
 	--data @$diff \
-	> $COMMIT_MSG_FILE
-# 2> >(xargs -I % echo "# %" > $COMMIT_MSG_FILE)
+	>> $COMMIT_MSG_FILE
 # gets the autocommit message from my api
 # currently outputs nothing if key is wrong
-
-#git commit -eF $commit_message
-# sets the commit message to our autocommit message, and then opens it for editing in git's default editor
 
 rm $diff
