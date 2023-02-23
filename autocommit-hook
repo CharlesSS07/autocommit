@@ -33,7 +33,7 @@ git diff $(git log -n 1 | grep "^commit" | cut -f 2 -d " ") > $diff
 # shove it into a file to simplify things
 
 curl -s \
-	"https://u1319464.wixsite.com/git-autocommit--chan/_functions-dev/autocommit?key=$(get_hidden_key)" \
+	"$API_ENDPOINT/autocommit?key=$(get_hidden_key)" \
 	-H 'Content-Type: application/json' \
 	--data @$diff \
 	>> $COMMIT_MSG_FILE

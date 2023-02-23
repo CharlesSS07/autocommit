@@ -1,14 +1,15 @@
 ﻿<Properties StartupConfiguration="{FBB13F62-3BF9-4020-98EA-747DF8B468FB}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.autocommit-windows PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="autocommit-windows/Program.cs">
     <Files>
-      <File FileName="autocommit-windows/Program.cs" Line="18" Column="1" />
-      <File FileName="autocommit-windows/autocommit-windows.csproj" Line="12" Column="1" />
+      <File FileName="autocommit-windows/Program.cs" Line="92" Column="1" />
+      <File FileName="autocommit-windows/autocommit-windows.csproj" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,5 +21,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

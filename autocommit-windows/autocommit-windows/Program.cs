@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 
 string SCRIPT_NAME = "autocommit";
 
-string SITE_MAIN = "https://u1319464.wixsite.com/git-autocommit--chan";
+string SITE_MAIN = "https://u1319464.wixsite.com/git-auto-commit";
 
 string API_ENDPOINT = $"{SITE_MAIN}/_functions-dev/";
 
@@ -22,9 +22,33 @@ string API_ENDPOINT = $"{SITE_MAIN}/_functions-dev/";
 
 //Console.WriteLine(config.Get<string>("user.name"));
 
-if (Environment.GetEnvironmentVariable("AUTOCOMMIT_KEY") == null)
+// this is the wrong way to interface with git but fuck it, it works wonderfully.
+// also, c sharp is stupid, so this is the right way.
+string RunGitCommmand(string args)
 {
-    Console.WriteLine($"{SCRIPT_NAME}: You must register this command line (no Autocommit key detected). Go to this url if the browser does not opened.");
+    // stolen from https://stackoverflow.com/questions/206323/how-to-execute-command-line-in-c-get-std-out-results
+    // Start the child process.
+    Process p = new Process();
+    // Redirect the output stream of the child process.
+    p.StartInfo.UseShellExecute = false;
+    p.StartInfo.RedirectStandardOutput = true;
+    p.StartInfo.FileName = "git";
+    p.StartInfo.Arguments = args;
+    p.Start();
+    // Do not wait for the child process to exit before
+    // reading to the end of its redirected stream.
+    // p.WaitForExit();
+    // Read the output stream first and then wait.
+    string output = p.StandardOutput.ReadToEnd();
+    p.WaitForExit();
+    return output;
+}
+
+string AUTOCOMMIT_KEY = RunGitCommmand("config --global user.autocommitkey");
+
+if (AUTOCOMMIT_KEY == "")
+{
+    Console.WriteLine($"{SCRIPT_NAME}: You must register this command line (no autocommit key detected). Go to this url if the browser does not open.");
 
     byte[] identifierRandomBytes = new byte[6];
     byte[] hiddenKeyRandomBytes = new byte[6 * 4];
@@ -32,7 +56,7 @@ if (Environment.GetEnvironmentVariable("AUTOCOMMIT_KEY") == null)
     rng.GetBytes(identifierRandomBytes);
     rng.GetBytes(hiddenKeyRandomBytes);
 
-    string AUTOCOMMIT_KEY = Convert.ToBase64String(identifierRandomBytes) + ":" + Convert.ToBase64String(hiddenKeyRandomBytes);
+    AUTOCOMMIT_KEY = Convert.ToBase64String(identifierRandomBytes) + ":" + Convert.ToBase64String(hiddenKeyRandomBytes);
 
     string SITE_CLI_LOGIN = $"{SITE_MAIN}/cli-login?key={AUTOCOMMIT_KEY}";
 
@@ -45,7 +69,7 @@ if (Environment.GetEnvironmentVariable("AUTOCOMMIT_KEY") == null)
     }
     catch (Exception e)
     {
-        Console.WriteLine("Could not open default browser. Error:");
+        Console.WriteLine($"Could not open '{SITE_CLI_LOGIN}' in default browser. Error:");
         Console.WriteLine(e.Message);
     }
 
@@ -62,5 +86,7 @@ if (Environment.GetEnvironmentVariable("AUTOCOMMIT_KEY") == null)
 }
 else
 {
-    Console.WriteLine("Found Autocommit key");
+    Console.WriteLine("Found Autocommit key: " + AUTOCOMMIT_KEY);
 }
+
+
