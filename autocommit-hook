@@ -2,8 +2,8 @@
 
 # does an api call to autocommit api
 
-COMMIT_MSG_FILE=$1
-COMMIT_SOURCE=$2
+COMMIT_MSG_FILE=$1 # file to put final commit message into
+COMMIT_SOURCE=$2 # user input from -m or -F
 SHA1=$3
 
 # parse input from git
