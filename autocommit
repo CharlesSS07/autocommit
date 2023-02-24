@@ -18,27 +18,27 @@ fi
 touch $AUTOCOMMIT_HOOK
 chmod a+x $AUTOCOMMIT_HOOK
 touch $GIT_HOOK
-tail -n +30 $BASH_SOURCE > $AUTOCOMMIT_HOOK
+echo "#!/usr/bin/env bash" > $AUTOCOMMIT_HOOK # make first line shebang
+tail -n +30 $BASH_SOURCE >> $AUTOCOMMIT_HOOK  # copy in the hook logic, and api call
 echo "#!/usr/bin/env bash" >> $GIT_HOOK
-echo "$AUTOCOMMIT_HOOK \$@" >> $GIT_HOOK
+echo "$AUTOCOMMIT_HOOK \$@" >> $GIT_HOOK      # call the autocommit hook from the prepare-commit-msg hook
 
 exit
 
 # SCRIPT BELOW LINE 30 IS HOOK GIT HOOK
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
-#!/usr/bin/env bash
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 SCRIPT_NAME="autocommit"
 
