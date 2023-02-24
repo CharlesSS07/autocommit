@@ -95,11 +95,6 @@ diff=$(mktemp /tmp/diff.XXXXXX)
 git diff $(git log -n 1 | grep "^commit" | cut -f 2 -d " ") > $diff
 # makes the diff between HEAD and the staged working tree
 
-# commit_message=$(mktemp /tmp/commit-message.XXXXXX)
-# where to store the autocommit message
-# gpt could return something that needs to be escaped
-# shove it into a file to simplify things
-
 curl -s \
 	"$API_ENDPOINT/autocommit?key=$(get_hidden_key)" \
 	-H 'Content-Type: application/json' \
