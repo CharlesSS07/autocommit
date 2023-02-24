@@ -1,7 +1,5 @@
 
 
-move autocommit-env and autocommit-hook to a string in autocommit-setup, and have it write them into a script in .git/hooks/, which is called by .git/hooks/prepare-commit-msg
-
 then make autocommit-setup take arguments like enable or disable, etc..
 
 TODO: make gpt prompt cognisant that text files might are not the change, even if they describe changes

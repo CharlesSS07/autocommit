@@ -1,23 +1,22 @@
 #!/usr/bin/env bash
 
-AUTOCOMMIT_SCRIPT_DIR=$(dirname $0)
+# this script installs autocommit, by chopping off the first 30 lines of itself, and copying the rest into an autocommit hook file in the .git/hooks folder, and adding a redirect at the bottom of the .git/hooks/prepare-commit-msg hook (creating files if they are not already present)
 
-echo $PWD $AUTOCOMMIT_SCRIPT_DIR $BASH_SOURCE
+# TODO: add command line verbs like install, uninstall, help
 
-AUTOCOMMIT_HOOK=$(git rev-parse --show-toplevel)/.git/hooks/autocommit
-GIT_HOOK=.git/hooks/prepare-commit-msg
-
-touch $AUTOCOMMIT_HOOK
-chmod a+x $AUTOCOMMIT_HOOK
+REPO_ROOT=$(git rev-parse --show-toplevel)
+AUTOCOMMIT_HOOK=$REPO_ROOT/.git/hooks/autocommit
+GIT_HOOK=$REPO_ROOT/.git/hooks/prepare-commit-msg
 
 if test -f "$AUTOCOMMIT_HOOK"; then
-	echo "Updating Autocommit installation."
+	echo "Updating autocommit installation."
 	rm $AUTOCOMMIT_HOOK
 fi
 
 touch $AUTOCOMMIT_HOOK
 chmod a+x $AUTOCOMMIT_HOOK
 touch $GIT_HOOK
+chmod a+x $GIT_HOOK
 echo "#!/usr/bin/env bash" > $AUTOCOMMIT_HOOK # make first line shebang
 tail -n +30 $BASH_SOURCE >> $AUTOCOMMIT_HOOK  # copy in the hook logic, and api call
 echo "#!/usr/bin/env bash" >> $GIT_HOOK
