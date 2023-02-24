@@ -21,12 +21,46 @@ tail -n +30 $BASH_SOURCE > $AUTOCOMMIT_HOOK
 exit
 
 # SCRIPT BELOW LINE 30 IS HOOK GIT HOOK
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+#!/usr/bin/env bash
 
+SCRIPT_NAME="autocommit"
 
+SITE_MAIN="https://u1319464.wixsite.com/git-auto-commit"
 
+API_ENDPOINT="$SITE_MAIN/_functions-dev/"
 
+AUTOCOMMIT_KEY=$(git config --global user.autocommitkey)
 
-
-
-
-
+if [[ -z "${AUTOCOMMIT_KEY}" ]]; then
+	
+	echo "$SCRIPT_NAME: You must register this command line (no Autocommit key detected). Go to this url if the browser hasn't already opened."
+	
+	AUTOCOMMIT_KEY=$(openssl rand -base64 8):$(openssl rand -base64 32)
+	
+	SITE_CLI_LOGIN="$SITE_MAIN/cli-login?key=$AUTOCOMMIT_KEY"
+	
+	open "$SITE_CLI_LOGIN"
+	
+	echo
+	echo "$SITE_CLI_LOGIN"
+	echo
+	
+	# add the key to the users global git config
+	git config --global user.autocommitkey $AUTOCOMMIT_KEY
+	exit
+else
+	echo "Found Autocommit key"
+fi
