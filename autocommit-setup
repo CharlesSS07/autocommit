@@ -16,9 +16,11 @@ if test -f "$AUTOCOMMIT_HOOK"; then
 fi
 
 touch $AUTOCOMMIT_HOOK
+chmod a+x $AUTOCOMMIT_HOOK
 touch $GIT_HOOK
 tail -n +30 $BASH_SOURCE > $AUTOCOMMIT_HOOK
-echo "$AUTOCOMMIT_HOOK" >> $GIT_HOOK
+echo "#!/usr/bin/env bash" >> $GIT_HOOK
+echo "$AUTOCOMMIT_HOOK \$@" >> $GIT_HOOK
 
 exit
 
