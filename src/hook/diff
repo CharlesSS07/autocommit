@@ -1,0 +1,15 @@
+
+function preprocess_diff {
+	cat < /dev/stdin | grep -v -e '^index' -e 'diff --git' -e '^@@'
+}
+
+function get_last_diff {
+	
+	local diff=$(mktemp /tmp/$SCRIPT_NAME.diff.XXXXXX)
+	git diff --staged $(git log -n 1 | grep "^commit" | cut -f 2 -d " ") | preprocess_diff > $diff
+	# | preprocess_diff
+	# makes the diff between HEAD and the staged working tree
+	# has an issue with git commit -a, probably because there is no staged working tree
+	# postprocesses diff to be less complex, and smaller
+	echo $diff
+}
