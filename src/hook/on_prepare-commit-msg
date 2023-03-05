@@ -1,0 +1,12 @@
+
+
+COMMIT_MSG_FILE=$1
+
+function on_prepare-commit-msg {
+	
+	# sets up AUTOCOMMIT_KEY
+	try_login_prompt
+	
+	prepare-commit-msg
+}
+
