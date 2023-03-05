@@ -20,6 +20,7 @@ function generate_commit_message {
 		-H 'Content-Type: application/json' \
 		--data @$- \
 		--output $1)
+	echo $response_code
 	# gets the autocommit message from my api, stores in $1
 	# also returns response_code, which is the http response status code of the request
 	# should be "200" for "ok"
@@ -35,14 +36,14 @@ function prepare-commit-msg {
 	# generate commit message, store http request output in response_code
 	local response_code=$(cat $diff | generate_commit_message $completion)
 	
-	if [[ "$response_code" -he 200 ]] ; then
+	if [[ "$response_code" -ne 200 ]] ; then
 		# response was not ok
 		echo "Autocommit failed. Nothing written to commit message. Error($response_code):" >&2
 		cat $completion >&2
 		# don't exit 1, so user can still write messages
 	else
 		# response was ok, append completion to the commit message file
-		cat $completeion >> $COMMIT_MSG_FILE
+		cat $completion >> $COMMIT_MSG_FILE
 		echo " (autocommit-enabled)" >> $COMMIT_MSG_FILE
 		# comment out to prevent autocommit-enabled from showing up in commit
 	fi
