@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# this script assembles other scripts from their source files
+
+SCRIPT_NAME="autocommit"
+
+SITE_MAIN="https://u1319464.wixsite.com/git-auto-commit"
+
+API_ENDPOINT="$SITE_MAIN/_functions-dev/"
+
+# build the hook
+
+hook='./bin/autocommit'
+
+rm $hook
+touch $hook
+
+echo "#!/usr/bin/env bash" >> $hook
+
+echo "SCRIPT_NAME=\"$SCRIPT_NAME\"" >> $hook
+echo "SITE_MAIN=\"$SITE_MAIN\"" >> $hook
+echo "API_ENDPOINT=\"$API_ENDPOINT\"" >> $hook
+
+echo "INSTALL_LINECOUNT=$(($(wc -l < ./src/install) + $(wc -l < $hook) + 2))" >> $hook
+cat ./src/install >> $hook
+
+echo "SCRIPT_NAME=\"$SCRIPT_NAME\"" >> $hook
+echo "SITE_MAIN=\"$SITE_MAIN\"" >> $hook
+echo "API_ENDPOINT=\"$API_ENDPOINT\"" >> $hook
+
+cat ./src/hook/login >> $hook
+
+cat ./src/hook/diff >> $hook
+
+cat ./src/hook/request >> $hook
+
+cat ./src/hook/on_prepare-commit-msg >> $hook
+echo "on_prepare-commit-msg" >> $hook
+
+chmod a+x $hook
