@@ -1,0 +1,30 @@
+
+function try_login_prompt {
+	
+	# save AUTOCOMMIT_KEY in global variable
+	AUTOCOMMIT_KEY=$(git config --global user.autocommitkey)
+	# use git config because it is more cross platform than environment variables
+	# also makes sense, could downgrade to --local to have local repo with local autocommit install and settings
+	
+	# check if autocommit key was found
+	if [[ -z "${AUTOCOMMIT_KEY}" ]]; then
+		# the key was not found, must have user install
+		echo "$SCRIPT_NAME: You must register this command line (no Autocommit key detected). Go to this url if the browser hasn't already opened."
+		
+		AUTOCOMMIT_KEY=$(openssl rand -base64 8):$(openssl rand -base64 32)
+		
+		SITE_CLI_LOGIN="$SITE_MAIN/cli-login?key=$AUTOCOMMIT_KEY"
+		
+		open "$SITE_CLI_LOGIN"
+		
+		echo
+		echo "$SITE_CLI_LOGIN"
+		echo
+		
+		# add the key to the users global git config
+		git config --global user.autocommitkey $AUTOCOMMIT_KEY
+		exit
+	else
+		echo "AUTOCOMMIT_KEY found"
+	fi
+} >&2
