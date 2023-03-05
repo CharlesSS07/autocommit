@@ -11,6 +11,12 @@ GIT_HOOK=$REPO_ROOT/.git/hooks/prepare-commit-msg
 if test -f "$AUTOCOMMIT_HOOK"; then
 	echo "Updating autocommit installation."
 	rm $AUTOCOMMIT_HOOK
+else
+	touch $GIT_HOOK
+	echo "Doing clean install of autocommit."
+	echo "#!/usr/bin/env bash" >> $GIT_HOOK
+	echo "$AUTOCOMMIT_HOOK \$@" >> $GIT_HOOK
+	echo "# ^^^ Lines Added by inital autocommit installation." >> $GIT_HOOK
 fi
 
 touch $AUTOCOMMIT_HOOK
@@ -18,9 +24,7 @@ chmod a+x $AUTOCOMMIT_HOOK
 touch $GIT_HOOK
 chmod a+x $GIT_HOOK
 echo "#!/usr/bin/env bash" > $AUTOCOMMIT_HOOK # make first line shebang
-tail -n +30 $BASH_SOURCE >> $AUTOCOMMIT_HOOK  # copy in the hook logic, and api call
-echo "#!/usr/bin/env bash" >> $GIT_HOOK
-echo "$AUTOCOMMIT_HOOK \$@" >> $GIT_HOOK      # call the autocommit hook from the prepare-commit-msg hook
+tail -n +32 $BASH_SOURCE >> $AUTOCOMMIT_HOOK  # copy in the hook logic, and api call
 
 exit
 
@@ -46,6 +50,8 @@ SITE_MAIN="https://u1319464.wixsite.com/git-auto-commit"
 API_ENDPOINT="$SITE_MAIN/_functions-dev/"
 
 AUTOCOMMIT_KEY=$(git config --global user.autocommitkey)
+# use git config because it is more cross platform than environment variables
+# also makes sense, could downgrade to --local to have local repo with local autocommit install and settings
 
 # check if autocommit key was found
 if [[ -z "${AUTOCOMMIT_KEY}" ]]; then
@@ -91,16 +97,35 @@ function get_hidden_key {
         # also, md5 has a simple plain js implementation, and is "generally faster than sha256"
 }
 
-diff=$(mktemp /tmp/diff.XXXXXX)
-git diff $(git log -n 1 | grep "^commit" | cut -f 2 -d " ") > $diff
+diff=$(mktemp /tmp/autocommit.diff.XXXXXX)
+git diff --staged $(git log -n 1 | grep "^commit" | cut -f 2 -d " ") | grep -v -e '^index' -e 'diff --git' -e '^@@' > $diff
 # makes the diff between HEAD and the staged working tree
+# has an issue with git commit -a, probably because there is no staged working tree
 
-curl -s \
+completeion=$(mktemp /tmp/autocommit.XXXXXX)
+response_code=$(curl --write-out "%{http_code}" --silent \
 	"$API_ENDPOINT/autocommit?key=$(get_hidden_key)" \
 	-H 'Content-Type: application/json' \
 	--data @$diff \
-	>> $COMMIT_MSG_FILE
-# gets the autocommit message from my api
-# currently outputs nothing if key is wrong
+	--output $completeion)
+# gets the autocommit message from my api, stoes in completeion
+# also returns response_code, which is the http response status code of the request
+# should be "200" for "ok"
 
+# begin cleaning up
 rm $diff
+
+if [[ "$response_code" -ne 200 ]] ; then
+	# response was not ok
+	echo "Autocommit failed. Nothing written to commit message. Error($response_code):"
+	cat $completeion
+	# don't exit 1, so user can still write messages
+else
+	# response was ok, append completion to the commit message file
+	cat $completeion >> $COMMIT_MSG_FILE
+	
+	echo "(autocommit-enabled)" >> $COMMIT_MSG_FILE
+	# comment out to prevent autocommit-enabled from showing up in commit
+fi
+
+rm $completeion
